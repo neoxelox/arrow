@@ -1,3 +1,22 @@
+# Custom
+.vscode/
+.idea/
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+.DS_Store/
+.unlighthouse
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # Logs
 logs
 *.log
@@ -79,8 +98,10 @@ typings/
 .next
 
 # Nuxt.js build / generate output
+.output
 .nuxt
 dist
+nuxt.d.ts
 
 # Gatsby files
 .cache/
