@@ -1,5 +1,7 @@
+import { replace } from "svelte-spa-router"
 import { token } from "../stores/token"
 import { nft } from "./nft"
+
 export class ApiError extends Error {
   public status: number
 
@@ -42,7 +44,10 @@ export class api {
     }
 
     if (!response.ok) {
-      // If status is 401 Unauthorized redirect to authentication page
+      if (response.status === 401) {
+        replace("/authentication")
+      }
+
       nft.error(response.statusText)
       throw new ApiError(response.statusText, response.status)
     }

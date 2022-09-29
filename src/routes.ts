@@ -1,10 +1,12 @@
 import { wrap } from "svelte-spa-router/wrap"
+import { get } from "svelte/store"
 import Dashboard from "./layouts/Dashboard.svelte"
 import Standalone from "./layouts/Standalone.svelte"
 import Authentication from "./pages/Authentication.svelte"
 import Home from "./pages/dashboard/Home.svelte"
 import NotFound from "./pages/NotFound.svelte"
 import Onboarding from "./pages/Onboarding.svelte"
+import { token } from "./stores/token"
 
 export default {
   "/": wrap({
@@ -12,6 +14,7 @@ export default {
     props: {
       page: Home,
     },
+    conditions: isAuthenticated,
   }),
   "/authentication": wrap({
     component: Standalone,
@@ -31,4 +34,8 @@ export default {
       page: NotFound,
     },
   }),
+}
+
+function isAuthenticated(): boolean {
+  return get(token) !== null
 }
