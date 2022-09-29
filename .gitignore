@@ -123,3 +123,6 @@ nuxt.d.ts
 
 # TernJS port file
 .tern-port
+
+# Rollup analyzer
+stats.html

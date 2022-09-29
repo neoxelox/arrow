@@ -2,6 +2,7 @@ import htmlMinimize from "@sergeymakinen/vite-plugin-html-minimize"
 import { svelte } from "@sveltejs/vite-plugin-svelte"
 import autoprefixer from "autoprefixer"
 import cssnano from "cssnano"
+import { visualizer } from "rollup-plugin-visualizer"
 import sveltePreprocess from "svelte-preprocess"
 import tailwindcss from "tailwindcss"
 import { defineConfig } from "vite"
@@ -35,6 +36,7 @@ export default defineConfig({
       algorithm: "gzip",
       deleteOriginFile: true,
     }),
+    visualizer({ gzipSize: true, open: true }),
   ],
   css: {
     postcss: {

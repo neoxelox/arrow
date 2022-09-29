@@ -1,5 +1,5 @@
 import { token } from "../stores/token"
-
+import { nft } from "./nft"
 export class ApiError extends Error {
   public status: number
 
@@ -37,14 +37,13 @@ export class api {
         body: body && JSON.stringify(body),
       })
     } catch (error) {
-      // Show system error message toast
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      throw new ApiError(error as any, 500)
+      nft.error(error as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      throw new ApiError(error as any, 500) // eslint-disable-line @typescript-eslint/no-explicit-any
     }
 
     if (!response.ok) {
-      // Show api error message toast
       // If status is 401 Unauthorized redirect to authentication page
+      nft.error(response.statusText)
       throw new ApiError(response.statusText, response.status)
     }
 
