@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { SvelteComponentTyped } from "svelte"
+  import type { SvelteComponent } from "svelte"
 
-  export let page: SvelteComponentTyped
+  export let page: typeof SvelteComponent
 </script>
 
 <div>
