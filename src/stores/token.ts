@@ -1,4 +1,4 @@
-import { writable, type Subscriber, type Unsubscriber, type Updater } from "svelte/store"
+import { get, writable, type Subscriber, type Unsubscriber, type Updater } from "svelte/store"
 
 export class token {
   private static LOCAL_STORAGE_KEY = "token"
@@ -6,6 +6,10 @@ export class token {
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
+
+  public static get(): string {
+    return get(this.storage) || ""
+  }
 
   public static subscribe(run: Subscriber<string>): Unsubscriber {
     return this.storage.subscribe((value) => {
