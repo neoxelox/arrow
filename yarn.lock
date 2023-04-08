@@ -665,6 +665,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.38.0
     "@typescript-eslint/parser": ^5.38.0
     autoprefixer: ^10.4.12
+    cronstrue: ^2.21.0
     cssnano: ^5.1.13
     eslint: ^8.24.0
     eslint-config-prettier: ^8.5.0
@@ -1060,6 +1061,15 @@ __metadata:
     path-type: ^4.0.0
     yaml: ^1.10.0
   checksum: 4be63e7117955fd88333d7460e4c466a90f556df6ef34efd59034d2463484e339666c41f02b523d574a797ec61f4a91918c5b89a316db2ea2f834e0d2d09465b
+  languageName: node
+  linkType: hard
+
+"cronstrue@npm:^2.21.0":
+  version: 2.21.0
+  resolution: "cronstrue@npm:2.21.0"
+  bin:
+    cronstrue: bin/cli.js
+  checksum: c77206339b22c30f0d0c584dad19614cd29d712a00afc3cd5d6ebab8b5e651883e72c04832b82b55c4dcf4f6a9daff6c6c7023364770f7dff82ada29616d40a5
   languageName: node
   linkType: hard
 

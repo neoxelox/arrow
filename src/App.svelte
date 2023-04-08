@@ -3,7 +3,7 @@
   import routes from "./routes"
 </script>
 
-<main>
+<main class="h-screen w-screen">
   <Router {routes} on:conditionsFailed={() => replace("/authentication")} />
 </main>
 
