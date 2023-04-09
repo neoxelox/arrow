@@ -12,7 +12,9 @@ import { viteSingleFile } from "vite-plugin-singlefile"
 export default defineConfig({
   plugins: [
     svelte({
-      preprocess: sveltePreprocess(),
+      preprocess: sveltePreprocess({
+        postcss: true,
+      }),
     }),
     viteSingleFile({
       removeViteModuleLoader: true,
