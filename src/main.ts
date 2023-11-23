@@ -1,8 +1,10 @@
-import "./app.scss"
-import App from "./App.svelte"
+import Router from "svelte-spa-router";
+import "./main.scss";
+import routes from "./routes";
 
-const app = new App({
+const app = new Router({
   target: document.getElementById("app") as HTMLElement,
-})
+  props: { routes },
+});
 
-export default app
+export default app;

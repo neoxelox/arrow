@@ -5,7 +5,7 @@
 *.tmPreferences.cache
 *.stTheme.cache
 *.sublime-workspace
-.DS_Store/
+.DS_Store
 .unlighthouse
 
 # Yarn

@@ -1,13 +1,13 @@
-import htmlMinimize from "@sergeymakinen/vite-plugin-html-minimize"
-import { svelte } from "@sveltejs/vite-plugin-svelte"
-import autoprefixer from "autoprefixer"
-import cssnano from "cssnano"
-import { visualizer } from "rollup-plugin-visualizer"
-import sveltePreprocess from "svelte-preprocess"
-import tailwindcss from "tailwindcss"
-import { defineConfig } from "vite"
-import viteCompression from "vite-plugin-compression"
-import { viteSingleFile } from "vite-plugin-singlefile"
+import htmlMinimize from "@sergeymakinen/vite-plugin-html-minimize";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
+import autoprefixer from "autoprefixer";
+import cssnano from "cssnano";
+import { visualizer } from "rollup-plugin-visualizer";
+import sveltePreprocess from "svelte-preprocess";
+import tailwindcss from "tailwindcss";
+import { defineConfig } from "vite";
+import viteCompression from "vite-plugin-compression";
+import { viteSingleFile } from "vite-plugin-singlefile";
 
 export default defineConfig({
   plugins: [
@@ -42,7 +42,10 @@ export default defineConfig({
   ],
   css: {
     postcss: {
-      plugins: [tailwindcss(), autoprefixer(), cssnano()],
+      plugins: [tailwindcss({ config: ".tailwindrc.cjs" }), autoprefixer(), cssnano()],
     },
   },
-})
+  preview: {
+    open: "/index.html.gz",
+  },
+});

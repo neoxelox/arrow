@@ -8,6 +8,7 @@
     "resolveJsonModule": true,
     "composite": true,
     "baseUrl": ".",
+    "isolatedModules": true,
     "removeComments": true,
     "strict": true,
     "allowJs": true,
