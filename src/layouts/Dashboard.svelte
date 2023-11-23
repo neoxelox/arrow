@@ -2,11 +2,15 @@
   import { onDestroy, type SvelteComponent } from "svelte";
   import { location, push } from "svelte-spa-router";
   import DeviceIcon from "../components/icons/Device.svelte";
+  import FactoryResetIcon from "../components/icons/FactoryReset.svelte";
   import NoWiFiIcon from "../components/icons/NoWiFi.svelte";
   import RoleIcon from "../components/icons/Role.svelte";
+  import SignOutIcon from "../components/icons/SignOut.svelte";
+  import SystemInfoIcon from "../components/icons/SystemInfo.svelte";
   import TriggerIcon from "../components/icons/Trigger.svelte";
   import UserIcon from "../components/icons/User.svelte";
   import WiFiIcon from "../components/icons/WiFi.svelte";
+  import Menu from "../components/Menu.svelte";
   import ToastList from "../components/ToastList.svelte";
   import { api } from "../services/api";
   import { network, time, user } from "../stores";
@@ -38,6 +42,10 @@
     clearInterval(get_system_wifi_interval);
   });
 
+  let openSystemMenu: boolean = false;
+  let openWiFiMenu: boolean = false;
+  let openTimeMenu: boolean = false;
+
   // let innerWidth: number;
   // $: isMobile = innerWidth <= MOBILE_WIDTH_BREAKPOINT;
 </script>
@@ -59,10 +67,32 @@
     <div class="h-full w-1/3 flex flex-row flex-wrap justify-start content-center align-middle gap-2">
       <button
         class="inline-flex gap-2 rounded-md text-lg font-bold text-content hover:text-primary transition-colors select-none"
-        on:click={() => console.log("TODO")}
+        on:click={() => (openSystemMenu = true)}
       >
         <span class="text-2xl leading-none">{$user.emoji}</span>
         {$user.name}
+        <Menu class="bottom-20 left-4" bind:opened={openSystemMenu}>
+          <button
+            class="inline-flex rounded-md text-lg font-bold tracking-tight text-content hover:text-primary transition-colors select-none"
+          >
+            <SystemInfoIcon class="h-6 w-6 mt-[0.1rem] mr-2" />
+            System Information
+          </button>
+          <hr class="h-auto w-full border-2 border-background rounded-xl" />
+          <button
+            class="inline-flex rounded-md text-lg font-bold tracking-tight text-content hover:text-primary transition-colors select-none"
+          >
+            <SignOutIcon class="h-6 w-6 mt-[0.1rem] mr-2" />
+            Sign Out
+          </button>
+          <hr class="h-auto w-full border-2 border-background rounded-xl" />
+          <button
+            class="inline-flex rounded-md text-lg font-bold tracking-tight text-danger hover:text-primary transition-colors select-none"
+          >
+            <FactoryResetIcon class="h-6 w-6 mt-[0.1rem] mr-2" />
+            Factory Reset
+          </button>
+        </Menu>
       </button>
     </div>
 
@@ -128,19 +158,27 @@
         class="inline-flex rounded-md mt-[0.15rem] hover:text-primary transition-colors"
         class:text-content={$network}
         class:text-warning={!$network}
-        on:click={() => console.log("TODO")}
+        on:click={() => (openWiFiMenu = true)}
       >
         {#if $network}
           <WiFiIcon class="h-6 w-6" strength={networkStrength($network.strength)} />
         {:else}
           <NoWiFiIcon class="h-6 w-6" />
         {/if}
+        <Menu class="bottom-20 right-4" bind:opened={openWiFiMenu}>
+          <span class="text-lg font-bold text-content select-none">WiFi menu TODO</span>
+        </Menu>
       </button>
       <button
         class="inline-flex rounded-md text-lg font-bold text-content hover:text-primary transition-colors select-none"
-        on:click={() => console.log("TODO")}
+        on:click={() => (openTimeMenu = true)}
       >
         {$time.toLocaleTimeString(undefined, { timeStyle: "short" })}
+        <Menu class="bottom-20 right-4" bind:opened={openTimeMenu}>
+          <span class="text-lg font-bold tracking-tight text-content select-none">
+            {$time.toLocaleString(undefined, { dateStyle: "full", timeStyle: "long" })}
+          </span>
+        </Menu>
       </button>
     </div>
   </div>
