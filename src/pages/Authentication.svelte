@@ -1,5 +1,6 @@
 <script lang="ts">
   import { querystring, replace } from "svelte-spa-router";
+  import LoadingIcon from "../components/icons/Loading.svelte";
   import { api } from "../services/api";
   import { token, user } from "../stores";
   import { type PostLoginRequest, type PostLoginResponse } from "../types";
@@ -94,8 +95,16 @@
 
               replace(location || "/");
             });
-          }}>Sign in</button
+          }}
         >
+          {#await response}
+            <LoadingIcon class="h-6 w-6 text-primary fill-foreground" />
+          {:then}
+            Sign In
+          {:catch}
+            Sign In
+          {/await}
+        </button>
       </div>
     </form>
   </div>
