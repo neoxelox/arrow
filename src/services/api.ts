@@ -36,7 +36,7 @@ export class api {
     }
 
     if (!response.ok) {
-      if (response.status === 401) {
+      if (response.status === 401 && get(location) !== "/authentication") {
         replace(`/authentication?location=${get(location)}`);
       }
 
