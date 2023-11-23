@@ -11,3 +11,10 @@ export function map(value: number, in_min: number, in_max: number, out_min: numb
 export function networkStrength(strength: number): number {
   return map(strength, -90, -30, 0, 4);
 }
+
+export function setIntervalNow(handler: TimerHandler, timeout?: number): number {
+  if (handler instanceof Function) {
+    handler();
+  }
+  return setInterval(handler, timeout);
+}
