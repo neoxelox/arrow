@@ -2,6 +2,7 @@
   import { querystring, replace } from "svelte-spa-router";
   import LoadingIcon from "../components/icons/Loading.svelte";
   import { api } from "../services/api";
+  import { notifier } from "../services/notifier";
   import { token, user } from "../stores";
   import { type PostLoginRequest, type PostLoginResponse } from "../types";
 
@@ -69,7 +70,7 @@
           class="inline-flex rounded-md text-sm font-semibold leading-6 text-content hover:text-primary transition-colors select-none"
           on:click={(event) => {
             event.preventDefault();
-            console.log("TODO");
+            notifier.info("Under construction.");
           }}
         >
           Don't have an account?

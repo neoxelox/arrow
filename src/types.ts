@@ -73,10 +73,24 @@ export type Role = {
   created_at: Date;
 };
 
+export type NetworkIP = {
+  address: string;
+  netmask: string;
+  gateway: string;
+};
+
+export type NetworkDNS = {
+  main: string;
+  backup: string;
+};
+
 export type Network = {
   name: string;
   strength: number;
   security: string;
+  ip?: NetworkIP;
+  mac?: string;
+  dns?: NetworkDNS;
 };
 
 export enum ApiErrorCode {
@@ -98,20 +112,6 @@ export class ApiError extends Error {
     Object.setPrototypeOf(this, ApiError.prototype);
   }
 }
-
-export type PostRegisterRequest = {
-  name: string;
-  password: string;
-  emoji: string;
-};
-
-export type PostRegisterResponse = {
-  name: string;
-  token: string;
-  role: string;
-  emoji: string;
-  created_at: number;
-};
 
 export type PostLoginRequest = {
   name: string;
@@ -233,40 +233,33 @@ export type GetSystemTimeResponse = {
 
 export type GetSystemWiFiRequest = Record<PropertyKey, never>;
 
-export type GetSystemWiFiResponseNetwork = {
+export type GetSystemWiFiResponseCurrentNetworkIP = {
+  address: string;
+  netmask: string;
+  gateway: string;
+};
+
+export type GetSystemWiFiResponseCurrentNetworkDNS = {
+  main: string;
+  backup: string;
+};
+
+export type GetSystemWiFiResponseCurrentNetwork = {
+  name: string;
+  strength: number;
+  security: string;
+  ip: GetSystemWiFiResponseCurrentNetworkIP;
+  mac: string;
+  dns: GetSystemWiFiResponseCurrentNetworkDNS;
+};
+
+export type GetSystemWiFiResponseAvailableNetwork = {
   name: string;
   strength: number;
   security: string;
 };
 
 export type GetSystemWiFiResponse = {
-  current?: GetSystemWiFiResponseNetwork;
-  available: GetSystemWiFiResponseNetwork[];
+  current?: GetSystemWiFiResponseCurrentNetwork;
+  available: GetSystemWiFiResponseAvailableNetwork[];
 };
-
-export type PutSystemWiFiRequestIP = {
-  address: string;
-  netmask: string;
-  gateway: string;
-};
-
-export type PutSystemWiFiRequest = {
-  name: string;
-  password: string;
-  ip: PutSystemWiFiRequestIP;
-};
-
-export type PutSystemWiFiResponseIP = {
-  address: string;
-  netmask: string;
-  gateway: string;
-};
-
-export type PutSystemWiFiResponse = {
-  ssid: string;
-  ip: PutSystemWiFiRequestIP;
-};
-
-export type DeleteSystemResetRequest = Record<PropertyKey, never>;
-
-export type DeleteSystemResetResponse = Record<PropertyKey, never>;

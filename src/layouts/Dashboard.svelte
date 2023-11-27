@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy, type SvelteComponent } from "svelte";
-  import { location, push } from "svelte-spa-router";
+  import { location, push, replace } from "svelte-spa-router";
   import DeviceIcon from "../components/icons/Device.svelte";
   import FactoryResetIcon from "../components/icons/FactoryReset.svelte";
   import NoWiFiIcon from "../components/icons/NoWiFi.svelte";
@@ -13,8 +13,9 @@
   import Menu from "../components/Menu.svelte";
   import ToastList from "../components/ToastList.svelte";
   import { api } from "../services/api";
-  import { network, time, user } from "../stores";
-  import { type GetSystemTimeResponse, type GetSystemWiFiResponse } from "../types";
+  import { notifier } from "../services/notifier";
+  import { network, time, token, user } from "../stores";
+  import { type GetSystemTimeResponse, type GetSystemWiFiResponse, type Network } from "../types";
   import { networkStrength, setIntervalNow } from "../utils";
 
   // const MOBILE_WIDTH_BREAKPOINT: number = 600;
@@ -22,6 +23,14 @@
   const GET_SYSTEM_WIFI_PERIOD: number = 5 * 60;
 
   export let page: typeof SvelteComponent;
+
+  let openSystemMenu: boolean = false;
+  let openWiFiMenu: boolean = false;
+  let openTimeMenu: boolean = false;
+  let availableNetworks: Network[] = [];
+
+  // let innerWidth: number;
+  // $: isMobile = innerWidth <= MOBILE_WIDTH_BREAKPOINT;
 
   let get_system_time_interval = setIntervalNow(async () => {
     const response = await api.get<GetSystemTimeResponse>("/system/time");
@@ -32,22 +41,34 @@
     const response = await api.get<GetSystemWiFiResponse>("/system/wifi");
     network.set(
       response.current
-        ? { name: response.current.name, strength: response.current.strength, security: response.current.security }
+        ? {
+            name: response.current.name,
+            strength: response.current.strength,
+            security: response.current.security,
+            ip: {
+              address: response.current.ip.address,
+              netmask: response.current.ip.netmask,
+              gateway: response.current.ip.gateway,
+            },
+            mac: response.current.mac,
+            dns: { main: response.current.dns.main, backup: response.current.dns.backup },
+          }
         : null,
     );
+    availableNetworks = response.available
+      .filter(
+        (net_1, index, self) =>
+          self.findIndex((net_2) => net_2.name === net_1.name) === index && net_1.name !== $network?.name,
+      )
+      .map<Network>((network) => {
+        return { name: network.name, strength: network.strength, security: network.security };
+      });
   }, GET_SYSTEM_WIFI_PERIOD * 1000);
 
   onDestroy(() => {
     clearInterval(get_system_time_interval);
     clearInterval(get_system_wifi_interval);
   });
-
-  let openSystemMenu: boolean = false;
-  let openWiFiMenu: boolean = false;
-  let openTimeMenu: boolean = false;
-
-  // let innerWidth: number;
-  // $: isMobile = innerWidth <= MOBILE_WIDTH_BREAKPOINT;
 </script>
 
 <!-- <svelte:window bind:innerWidth /> -->
@@ -74,6 +95,7 @@
         <Menu class="bottom-20 left-4" bind:opened={openSystemMenu}>
           <button
             class="inline-flex rounded-md text-lg font-bold tracking-tight text-content hover:text-primary transition-colors select-none"
+            on:click={() => notifier.info("Under construction.")}
           >
             <SystemInfoIcon class="h-6 w-6 mt-[0.1rem] mr-2" />
             System Information
@@ -81,6 +103,11 @@
           <hr class="h-auto w-full border-2 border-background rounded-xl" />
           <button
             class="inline-flex rounded-md text-lg font-bold tracking-tight text-content hover:text-primary transition-colors select-none"
+            on:click={async () => {
+              await api.post("/logout");
+              token.set("");
+              replace(`/authentication?location=${$location}`);
+            }}
           >
             <SignOutIcon class="h-6 w-6 mt-[0.1rem] mr-2" />
             Sign Out
@@ -88,6 +115,7 @@
           <hr class="h-auto w-full border-2 border-background rounded-xl" />
           <button
             class="inline-flex rounded-md text-lg font-bold tracking-tight text-danger hover:text-primary transition-colors select-none"
+            on:click={() => notifier.info("Under construction.")}
           >
             <FactoryResetIcon class="h-6 w-6 mt-[0.1rem] mr-2" />
             Factory Reset
@@ -165,8 +193,39 @@
         {:else}
           <NoWiFiIcon class="h-6 w-6" />
         {/if}
-        <Menu class="bottom-20 right-4" bind:opened={openWiFiMenu}>
-          <span class="text-lg font-bold text-content select-none">WiFi menu TODO</span>
+        <Menu class="bottom-20 right-4 max-h-72" bind:opened={openWiFiMenu}>
+          {#if $network}
+            <span class="inline-flex flex-col">
+              <span class="inline-flex justify-between gap-6 text-content">
+                <WiFiIcon class="h-6 w-6 mt-[0.1rem]" strength={networkStrength($network.strength)} />
+                <span class="text-lg font-bold tracking-tight text-right select-none">{$network.name}</span>
+              </span>
+              <span class="text-sm font-bold tracking-tight text-content/60 text-right select-none"
+                ><span class="text-xs">{$network.ip?.address}</span>
+                {$network.security}</span
+              >
+            </span>
+            <hr class="h-auto w-full border-2 border-background rounded-xl" />
+          {/if}
+          <div class="flex flex-col gap-2 overflow-y-scroll no-scrollbar">
+            {#each availableNetworks as network (network.name)}
+              <button
+                class="inline-flex justify-between gap-6 rounded-md group"
+                on:click={() => notifier.info("Under construction.")}
+              >
+                <WiFiIcon
+                  class="h-6 w-6 mt-[0.1rem] text-content group-hover:text-primary transition-colors"
+                  strength={networkStrength(network.strength)}
+                />
+                <span class="inline-flex flex-col select-none text-right font-bold tracking-tight">
+                  <span class="text-lg text-content group-hover:text-primary transition-colors">{network.name}</span>
+                  <span class="text-sm text-content/60 group-hover:text-primary transition-colors"
+                    >{network.security}</span
+                  >
+                </span>
+              </button>
+            {/each}
+          </div>
         </Menu>
       </button>
       <button
