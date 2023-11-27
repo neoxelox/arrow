@@ -1,13 +1,8 @@
 <script lang="ts">
-  import Widget from "./Widget.svelte";
-
-  let widgets = [1, 2];
 </script>
 
-<div class="h-full w-full flex flex-row flex-wrap gap-4">
-  {#each widgets as widget (widget)}
-    <Widget />
-  {/each}
+<div class="h-auto w-full flex flex-row flex-wrap gap-4">
+  <slot />
 </div>
 
 <style lang="scss">

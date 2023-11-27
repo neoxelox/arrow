@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class="w-full max-w-sm pointer-events-auto overflow-hidden rounded-xl bg-foreground shadow-sm"
+  class="w-full max-w-sm pointer-events-auto overflow-hidden rounded-xl bg-foreground shadow-sm z-50"
   in:classes={{
     duration: 350,
     base: "transform ease-out duration-300 transition",

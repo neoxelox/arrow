@@ -99,7 +99,7 @@
           }}
         >
           {#await response}
-            <LoadingIcon class="h-6 w-6 text-primary fill-foreground" />
+            <LoadingIcon class="h-6 w-6 self-center text-primary fill-foreground" />
           {:then}
             Sign In
           {:catch}

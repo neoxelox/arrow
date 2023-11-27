@@ -14,13 +14,13 @@ export type Toast = {
 };
 
 export enum DeviceType {
-  SENSOR = 0,
-  ACTUATOR,
+  SENSOR = "SENSOR",
+  ACTUATOR = "ACTUATOR",
 }
 
 export enum DeviceSubtype {
-  BUTTON = 0,
-  BISTATE,
+  BUTTON = "BUTTON",
+  BISTATE = "BISTATE",
 }
 
 export type DeviceContextButton = {
@@ -133,13 +133,13 @@ export type PostLogoutResponse = Record<PropertyKey, never>;
 export type GetDevicesRequest = Record<PropertyKey, never>;
 
 export enum GetDevicesResponseDeviceType {
-  SENSOR = 0,
-  ACTUATOR,
+  SENSOR = "SENSOR",
+  ACTUATOR = "ACTUATOR",
 }
 
 export enum GetDevicesResponseDeviceSubtype {
-  BUTTON = 0,
-  BISTATE,
+  BUTTON = "BUTTON",
+  BISTATE = "BISTATE",
 }
 
 export type GetDevicesResponseDeviceContextButton = {
@@ -148,10 +148,10 @@ export type GetDevicesResponseDeviceContextButton = {
 };
 
 export type GetDevicesResponseDeviceContextBistate = {
-  identifier_1: string;
-  emoji_1: string;
-  identifier_2: string;
-  emoji_2: string;
+  identifier1: string;
+  emoji1: string;
+  identifier2: string;
+  emoji2: string;
   state: number;
 };
 
